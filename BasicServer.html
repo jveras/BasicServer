@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee</title>
+    
+</head>
+<body>
+
+    <h1>Add Teacher</h1>
+
+    <input class="F" placeholder="First Name" type="text" />
+    <input class="L" placeholder="Last Name"  type="text" />
+    <select name="" class="Sub" multiple>
+        <option value="0">Math</option>
+        <option value="1">Robotics</option>
+        <option value="2">English</option>
+        <option value="3">Computer Science</option>
+      </select>
+      <select name="" class="Role" multiple>
+        <option value="0">Administrator</option>
+        <option value="1">Teacher</option>
+        <option value="2">Teacher Assistant</option>
+        <option value="3">Lead Teacher</option>
+        <option value="4">Training Instructor</option>
+      </select>
+    <button class="btn2">Confirm</button>
+
+    <br />
+    <ul class="Teacher">
+        
+        
+
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script type="text/javascript">
+        
+       
+
+       $(".btn2").click(function(){
+           var info = $(".Sub").val();
+           for (let index = 0; index < info.length; index++) {
+               var a = info[index];
+            info[index] = parseInt(a);
+               
+           }
+           console.log(info)
+           
+           
+           var data = $(".Role").val();
+           for (let index = 0; index < data.length; index++) {
+               var a = data[index];
+            data[index] = parseInt(a);
+               
+           }
+           console.log(data);
+           
+    
+           var counter = 0;
+           for (let index = 0; index < data.length; index++) {
+               
+               if(data[index] === 0 || data[index] === 1|| data[index] === 2){
+                   counter ++
+                   console.log(counter)
+                   }
+           }
+                 if(counter ===1){
+                     console.log("equal")
+                    $.ajax("http://localhost:8081/Add", {
+                            method: "POST",
+                            data:{
+                                F:$(".F").val(),
+                                L:$(".L").val(),
+                                Subject:info,
+                                Role:data
+                            },
+                            success: function(results){
+                                console.log();
+                                
+                            },
+                            error: function(err){
+                            console.log(err);
+                            }
+                        });
+                   }else if(counter >1){
+                       alert("Error TO MANY HIGH ROLES")
+                   }
+                
+           
+           
+           
+            $(".F").val("")
+            $(".L").val("")
+            $(".Sub").val("")
+            $(".Role").val("")
+          });
+        
+
+          
+    </script>
+
+</body>
+</html>

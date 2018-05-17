@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee</title>
+    
+</head>
+<body>
+
+    <h1>List of All Rooms</h1>
+
+
+
+
+    <ul class="Rooms">
+        
+        
+
+    </ul>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script type="text/javascript">
+        $.getJSON("http://localhost:8081/Rooms", function(results){
+
+            var html="";
+                //Saving the Employee array of objects
+                var array=results.sub;
+                console.log(array);
+                var array2= results.room;
+                console.log(array2);
+                
+                //looping through the array to go into each object
+                for(var key in array){
+                    //Getting Keys of each Object
+                    //array[key] is each object here it is returning all the keys
+                    //that pertain to that object
+                    var long = Object.keys(array[key]);
+                    html+="</br>"
+                    
+                    for (var j = 0; j < long.length; j++) {
+                        //if the info returned is not a number i know it
+                        //is the subject so i print it to the page
+                        if (isNaN( array[key][long[j]])){
+                            html += "<li> Subject: " + array[key][long[j]] + "</li>";
+                            //if it is a number it will loop through the 'rooms' array and find the 
+                            //depending on the index provided
+                        } else {
+                            html += "<li> Room: " + array2[array[key][long[j]]] + "</li>";
+                        }
+                    }
+                }
+                $(".Rooms").html(html);
+               
+            
+
+    });
+    
+
+           
+           
+
+          
+    </script>
+
+</body>
+</html>

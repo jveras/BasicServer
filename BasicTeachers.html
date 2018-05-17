@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee</title>
+    
+</head>
+<body>
+
+    
+
+
+
+<div class="all">
+        <h1>List of All Teachers</h1>
+    <ul class="Teacher">
+        
+    </ul>
+</div>
+    <div class="single">
+            <h1>Chosen Teacher</h1>
+        <ul class="Teacherv2">
+        
+        </ul>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script type="text/javascript">
+     $(".single").hide();
+        $.getJSON("http://localhost:8081/Employee", function(results){
+           
+           
+            var html="";
+                //Saving the Employee array of objects
+                var array=results.data;
+                var array2=results.room;
+                
+                console.log(array2);
+                var id  = -1;
+                //looping through the array to go into each object
+                for(var key in array){
+                    //Getting Keys of each Object
+                    //array[key] is each object here it is returning all the keys
+                    //that pertain to that object
+                    var long = Object.keys(array[key]);
+                    var each = array[key];  
+                    
+                    html+="</br>"
+                     id++;
+                    for (var j = 0; j < long.length; j++) {
+                        
+                        if(Array.isArray(each[long[j]])=== false){
+                   
+                            html += `<li onclick="getTeacher(${id})">  ${long[j]} : ${each[long[j]]} </li>`;
+                    
+                        }
+                    }
+                }
+                $(".Teacher").html(html);
+    });
+    
+
+           function getTeacher(id){
+               $(".all").hide();
+               $.getJSON("http://localhost:8081/Employee", function(results){
+
+           
+            var html="";
+                //Saving the Employee array of objects
+                var array=results.data[id];
+                var array2=results.room;
+                var array3=results.roles;
+                var long = Object.keys(array);
+                for (var j = 0; j < long.length; j++) {
+
+                        var location = long[j];
+                        console.log(location)
+
+                        if(Array.isArray(array[location])=== false){
+                   
+                            html += `<li>  ${location} : ${array[location]} </li>`;
+                    
+                        }else if(Array.isArray(array[location])=== true){
+                            console.log(array[location])
+                                var money = 0;
+                            if(array[location][0]==="Subject"){
+                                var arr = array[location];
+                            html+= "<li>Subjects: </li>"
+                            for (let index = 1; index < arr.length; index++) {
+                                if (typeof arr[index] === 'string' || arr[index]  instanceof String){
+                                    html+= "<listyle='list-style: none'>"+arr[index]
+                                    }else if(typeof arr[index]  === 'number' ||arr[index]  instanceof Number){
+                                        html+= ", Room: "+ array2[arr[index]]  +"</li></br>"
+                                    }
+                            }
+                            }else if(array[location][0]==="Role"){
+                                var arr = array[location];
+                            html+= "<li>Roles: </li>"
+                            for (let index = 1; index < arr.length; index++) {
+                                if (typeof arr[index] === 'string' || arr[index]  instanceof String){
+                                    html+= "<listyle='list-style: none'>"+arr[index]
+                                    }else if(typeof arr[index]  === 'number' ||arr[index]  instanceof Number){
+                                        html+= ", PayGrade: "+ arr[index] +"</li></br>"
+                                        money+= arr[index]
+                                    }
+                            }
+                            html+= `<li='list-style: none'>Total Salary: ${money}</li> </br>`
+                         }
+                         
+                    }
+                }
+                    html+=`<button onclick="GoBack()">Go Back</button>`
+                    $(".single").show();
+                    $(".Teacherv2").html(html);
+            });
+           }
+           function GoBack(){
+               $(".single").hide();
+               $(".all").show();
+           }
+
+
+          
+    </script>
+
+</body>
+</html>
